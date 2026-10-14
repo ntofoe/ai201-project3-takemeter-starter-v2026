@@ -46,13 +46,17 @@
 
 ---
 
-## Label Taxonomy
+### Label Taxonomy
+Three labels, defined by what a post *does*, not its tone:
 
-<!-- Each label: a one-sentence definition and two real examples from your
-     reading. Then your decision rule for the hardest boundary.
+- **`analysis`** — an arguable claim about basketball supported by a specific on-court fact (stat, score, minutes, quote, or specific described play) offered as the reason. Examples: "…He was +17 in a 1 point win" (KAT foul trouble); "…He only rested him 50 seconds in the 2nd half…" (Mitch Johnson).
 
-     The decision rule is worth a point on its own and it's the thing most
-     people leave out. Every taxonomy has a hardest boundary. Name yours. -->
+- **`hot_take`** — an arguable claim about basketball, including predictions, with no specific on-court support. Examples: "OG deserves the FMVP"; "Wemby may just become the best player to ever touch a basketball."
+
+- **`reaction`** — no arguable claim: a feeling, joke, meme, taunt, or restatement.
+  Examples: "Amazing game"; "Bad night to be a car parked in Manhattan".
+
+**Decision rule (analysis vs hot_take):** `analysis` requires a claim, a specific on-court fact, and that fact offered as support. Tone and insults are ignored; evidence strength is not judged; contract/salary/age/draft position alone are context, not support; vague descriptions ("so many boneheaded moves") don't count. A post that gives no claim at all is `reaction`, even if it contains a number.
 
 ### `label_one`
 
