@@ -39,144 +39,183 @@
 
 ## What This Does
 
-<!-- Your community, and what your classifier sorts posts into. Three or four
-     sentences. -->
-
-
+TakeMeter sorts comments from **r/nba** — top-level comments (plus some self-contained
+replies) from post-game threads of the 2026 NBA playoffs — into three labels: `analysis`,
+`hot_take` and `reaction`. The labels are defined by what a post *does*, not its tone: does it
+make an arguable claim about basketball, and does it back that claim with a specific on-court
+fact? r/nba is loud, profane and full of in-jokes, so a furious comment with a real stat in it
+still counts as an argument, and a calm comment with no claim is still just a reaction. The
+goal is to pull the posts that actually argue something with evidence out of a thread of
+thousands.
 
 ---
 
-### Label Taxonomy
-Three labels, defined by what a post *does*, not its tone:
+## Label Taxonomy
 
-- **`analysis`** — an arguable claim about basketball supported by a specific on-court fact (stat, score, minutes, quote, or specific described play) offered as the reason. Examples: "…He was +17 in a 1 point win" (KAT foul trouble); "…He only rested him 50 seconds in the 2nd half…" (Mitch Johnson).
+Three labels, defined by what a post *does*, not its tone. Same definitions are in
+`label_definitions.txt` (read by `baseline.py`). Working notes: `notes/milestone1.md`
+(reading + tally) and `notes/milestone2.md` (taxonomy + stress test).
 
-- **`hot_take`** — an arguable claim about basketball, including predictions, with no specific on-court support. Examples: "OG deserves the FMVP"; "Wemby may just become the best player to ever touch a basketball."
+**Why no "joke" label:** in my reading of 80 comments, 45% were jokes, memes, sarcasm or
+taunts. A separate joke label would be the fuzziest call in the dataset, because sarcasm
+depends on in-jokes. Defining labels by structure lets every joke land somewhere by a
+checkable test.
 
-- **`reaction`** — no arguable claim: a feeling, joke, meme, taunt, or restatement.
-  Examples: "Amazing game"; "Bad night to be a car parked in Manhattan".
+### `analysis`
 
-**Decision rule (analysis vs hot_take):** `analysis` requires a claim, a specific on-court fact, and that fact offered as support. Tone and insults are ignored; evidence strength is not judged; contract/salary/age/draft position alone are context, not support; vague descriptions ("so many boneheaded moves") don't count. A post that gives no claim at all is `reaction`, even if it contains a number.
-
-### `label_one`
-
-**Definition:**
-
-**Example 1:**
->
-
-**Example 2:**
->
-
-### `label_two`
-
-**Definition:**
+**Definition:** Makes an arguable claim about basketball and supports it with a specific
+on-court fact — a stat, score, minutes, a quote, or a specific described play — offered as the
+reason for the claim.
 
 **Example 1:**
->
+> KAT is way to important to this team to get into foul trouble. I'm sorry Mitchell Robinson is unplayable on both ends of the floor. The knicks won KAT's minutes by a fuckton. He needs to play 40 minutes at this rate. He was +17 in a 1 point win
 
 **Example 2:**
->
+> Mitch Johnson just cost Spurs the title. You can't shorten Wembys rest when you are up 17 points. He only rested him 50 seconds in the 2nd half. Spurs played with 4 the whole 2nd half because Wemby gassed out.
+
+### `hot_take`
+
+**Definition:** Makes an arguable claim about basketball (including predictions) but offers no
+specific on-court fact in support.
+
+**Example 1:**
+> OG deserves the FMVP
+
+**Example 2:**
+> Wemby may just become the best player to ever touch a basketball.
+
+### `reaction`
+
+**Definition:** Makes no arguable claim about basketball — a feeling, a joke, a meme, a taunt,
+or a restatement of what happened, even if it contains a number.
+
+**Example 1:**
+> Amazing game
+
+**Example 2:**
+> Bad night to be a car parked in Manhattan
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `analysis` vs `hot_take`
 
 **The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
+A post is `analysis` only if all three hold: (1) it makes an arguable claim; (2) it contains a
+specific on-court fact — a number about play, a quote, or a specific described play; (3) that
+fact is offered as support for the claim. Then:
+- **Tone never changes the label.** An insult with a supporting stat is still `analysis`.
+- **Evidence strength is not judged.** If a relevant fact is offered as support, it's
+  `analysis` even if the argument is weak ("is a fact offered?" is checkable; "is the evidence
+  good?" is opinion).
+- **Contract, salary, age, experience or draft position alone are context, not support.**
+- **Vague descriptions don't count** ("so many boneheaded moves", "kept chucking 3s") → `hot_take`.
 
+Secondary rule (`hot_take` vs `reaction`): if you could reply *"no, that's wrong"* to it as a
+statement about basketball, it has a claim. A bare number with no claim is `reaction`. Sarcasm
+is labeled by what it actually means.
 
+*The borderline post this rule was written for:* "Chet fucking stinks, Ozempic Abraham Lincoln
+is a no show once again 4 points on 1/2 FG in G7 of the WCF? With B2B Finals on the line?" →
+`analysis` (claim: no-show; fact: 4 points on 1/2 FG; insult ignored). Contrast: "De'Aaron Fox
+is getting paid close to a quarter of a BILLION dollars to be a basketball terrorist" →
+`hot_take` (the only fact is a contract, which is context, not on-court support).
 
 ---
 
 ## The Dataset
 
-<!-- Where you collected from, how you labelled, your counts, and three hard
-     cases. -->
+**Where the posts came from:** two r/nba post-game threads, saved as PDFs (comments sorted by
+top) and extracted:
+- Finals Game 4 — Knicks overcome a 29-point deficit vs the Spurs, June 10 2026 (https://redd.it/1u2ntjw)
+- West Finals Game 7 — Spurs eliminate the Thunder, May 31 2026 (https://redd.it/1tsj4wx)
 
-**Where the posts came from:**
+Top-level comments plus replies that are understandable on their own; whole posts kept, line
+breaks joined with spaces. **Excluded:** posts with no basketball content (pure political
+jokes, a recurring "HITLER DEAD" meme) and posts that only insult a city's residents.
 
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**Selection disclosure:** raw r/nba comments skew heavily toward `reaction` (≈63% in my
+reading) and away from `analysis` (≈16%). To meet my balance criterion (no label above 50%),
+**62 replies were deliberately selected because they argue something** (`analysis` or
+`hot_take`). The dataset is therefore more argumentative than r/nba itself.
+
+**How I labelled them:**
+1. **20 posts labeled cold by me** — no notes, no AI — first (`note` = `cold`).
+2. **180 posts pre-labeled by Claude** applying my written decision rule (`note` = `prelabeled`).
+3. **Review:** [FILL IN TRUTHFULLY — e.g. "I read all 180 pre-labeled rows and changed N" /
+   "I reviewed X of 180 and changed N" / "not individually reviewed"].
+
+Finding: **6 of my 20 cold labels don't follow my own written rule** — my instinct used
+`analysis` for "talks about a specific game moment" rather than "offers a fact as support."
+I kept the written rule for the other 180, and left the cold labels exactly as I made them;
+for those 6, the `note` column records what the strict rule would say.
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `reaction` | 73 | 36.5% |
+| `hot_take` | 71 | 35.5% |
+| `analysis` | 56 | 28.0% |
+| **Total** | 200 | 100% |
 
 **Three hard cases**
 
-<!-- Any post that made you pause: what it was, which two labels it could have
-     been, and what you chose. These are worth more than the easy 190. -->
-
 **1.**
-> *The post:*
+> *The post:* "Chet fucking stinks, Ozempic Abraham Lincoln is a no show once again 4 points on 1/2 FG in G7 of the WCF? With B2B Finals on the line?"
 >
-> *Could have been:*
+> *Could have been:* `reaction` (it's an insult) or `analysis`
 >
-> *I chose, because:*
+> *I chose, because:* `analysis` — the stat line is the evidence for "no show," and my rule ignores tone.
 
 **2.**
-> *The post:*
+> *The post:* "Exactly. Not only playoff experience but just experience in general. Their starting five has an average of just five years of NBA experience, with almost half of that coming from Fox alone. Meanwhile, the Knicks starters have an average of nine years in the league each. That's a huge gap"
 >
-> *Could have been:*
+> *Could have been:* `analysis` (it has real numbers) or `hot_take`
 >
-> *I chose, because:*
+> *I chose, because:* `hot_take` — years of experience are context, like age or salary, not a fact about what happened on the court.
 
 **3.**
-> *The post:*
+> *The post:* "Spurs up 27 at the half and then only scoring 30 in the second half is just unspeakable"
 >
-> *Could have been:*
+> *Could have been:* `analysis` or `reaction` (is "unspeakable" an arguable claim or a feeling?)
 >
-> *I chose, because:*
+> *I chose, because:* `analysis` — the numbers are offered as the reason for a judgment about the collapse. This is the case I'm least sure another labeler would agree with.
+
+**Known limitation:** all posts come from two games, so the same players (Fox, Wembanyama,
+Holmgren, Anunoby) appear everywhere; the model may learn player names as shortcuts.
 
 ---
 
 ## The Training Run
 
-<!-- Your starting model, your settings, and anything you changed and why. -->
+**Base model:** `distilbert-base-uncased`
 
-**Base model:**
+**Settings:** 3 epochs, learning rate 2e-5, batch size 16, max length 128 tokens, seed 42.
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Anything I changed from the defaults, and why:** Nothing — all notebook defaults.
+Trained on `mps` (Apple Silicon GPU via MPS), torch 2.2.2, as recorded in `results.json`. This environment's Python is an x86_64 build, which limits PyTorch to 2.2.2; that version needs NumPy 1.x, so the environment pins `numpy<2`, `scipy<1.14`, `scikit-learn<1.6` and `pyarrow<18` (exact versions in `requirements-lock.txt`). Hardware and library versions can change results for the same data and seed, so they're part of the result.
 
-**Anything I changed from the defaults, and why:**
-
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
-
-
+**Split sizes:** 140 train / 30 val / 30 test (stratified, seed 42). Test split per label: `hot_take` 11, `reaction` 11, `analysis` 8. `analysis` sits right at the ~8 threshold, so its F1 is likely to move the most between seeds.
 
 ---
 
 ## How I Used AI
 
-<!-- Two specific moments — what you asked, what came back, what you changed.
-
-     ⚠️ Plus disclosure of any pre-labelling. If you had a model pre-label a
-     batch and then read and corrected every one, say that. It's an allowed
-     workflow and disclosing it costs you nothing. Not disclosing it is the
-     problem. -->
-
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* After writing my three label definitions, I asked Claude for eight posts designed to sit on the boundaries between them, so I could check whether the definitions held up.
+- *What came back:* Eight posts. Two exposed gaps: "Brunson is the best clutch player in the league and it's not close. 36 tonight." showed my rule didn't say whether *weak* evidence counts, and "Imagine paying Chet $240M to take two shots" showed salary was being treated as evidence.
+- *What I changed:* I added two clauses to my decision rule — evidence strength is not judged, and contract/salary alone is context, not support.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* After labeling 20 posts cold, I asked Claude to compare my labels with my own written two-question rule.
+- *What came back:* 6 of 20 didn't follow the rule — I had used `analysis` for posts that mention a specific game moment but give no fact as support (e.g. "Fox should have never put that shot, lost the game").
+- *What I changed:* I chose to keep the written rule for the remaining 180 posts rather than rewrite it to match my instinct, and left the cold labels untouched as an honest record.
 
-**Pre-labelling disclosure:**
+**Pre-labelling disclosure:** 180 of 200 rows in `labels.csv` were pre-labeled by Claude using my written decision rule and are marked `prelabeled` in the `note` column; the 20 `cold` rows are mine alone. Review: [SAME AS ABOVE — FILL IN TRUTHFULLY]. Other AI use: Claude helped debug the environment (NumPy/PyTorch incompatibility, GitHub token auth), extracted comments from my saved thread PDFs, drafted descriptive tags for my Milestone 1 reading notes (which I reviewed), and proposed the structural framing of the labels (I chose it over alternatives).
+For `criteria.md`, Claude supplied context (test-split sizes, chance rate, what
+`agreement.py` measures) and drafted the wording; every target number was my choice.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
