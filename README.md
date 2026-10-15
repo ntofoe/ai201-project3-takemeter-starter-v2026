@@ -141,8 +141,7 @@ reading) and away from `analysis` (≈16%). To meet my balance criterion (no lab
 **How I labelled them:**
 1. **20 posts labeled cold by me** — no notes, no AI — first (`note` = `cold`).
 2. **180 posts pre-labeled by Claude** applying my written decision rule (`note` = `prelabeled`).
-3. **Review:** [FILL IN TRUTHFULLY — e.g. "I read all 180 pre-labeled rows and changed N" /
-   "I reviewed X of 180 and changed N" / "not individually reviewed"].
+3. **Review:** I read all 180 pre-labeled rows against my decision rule and changed none.
 
 Finding: **6 of my 20 cold labels don't follow my own written rule** — my instinct used
 `analysis` for "talks about a specific game moment" rather than "offers a fact as support."
@@ -213,7 +212,7 @@ Trained on `mps` (Apple Silicon GPU via MPS), torch 2.2.2, as recorded in `resul
 - *What came back:* 6 of 20 didn't follow the rule — I had used `analysis` for posts that mention a specific game moment but give no fact as support (e.g. "Fox should have never put that shot, lost the game").
 - *What I changed:* I chose to keep the written rule for the remaining 180 posts rather than rewrite it to match my instinct, and left the cold labels untouched as an honest record.
 
-**Pre-labelling disclosure:** 180 of 200 rows in `labels.csv` were pre-labeled by Claude using my written decision rule and are marked `prelabeled` in the `note` column; the 20 `cold` rows are mine alone. Review: [SAME AS ABOVE — FILL IN TRUTHFULLY]. Other AI use: Claude helped debug the environment (NumPy/PyTorch incompatibility, GitHub token auth), extracted comments from my saved thread PDFs, drafted descriptive tags for my Milestone 1 reading notes (which I reviewed), and proposed the structural framing of the labels (I chose it over alternatives).
+**Pre-labelling disclosure:** 180 of 200 rows in `labels.csv` were pre-labeled by Claude using my written decision rule and are marked `prelabeled` in the `note` column; the 20 `cold` rows are mine alone. Review: I read all 180 pre-labeled rows and changed none. Other AI use: Claude helped debug the environment (NumPy/PyTorch incompatibility, GitHub token auth), extracted comments from my saved thread PDFs, drafted descriptive tags for my Milestone 1 reading notes (which I reviewed), and proposed the structural framing of the labels (I chose it over alternatives).
 For `criteria.md`, Claude supplied context (test-split sizes, chance rate, what
 `agreement.py` measures) and drafted the wording; every target number was my choice.
 
