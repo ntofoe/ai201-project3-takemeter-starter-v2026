@@ -236,6 +236,7 @@ For `criteria.md`, Claude supplied context (test-split sizes, chance rate, what
 | F1 — `label_two` |  |  |  |
 
 **What I predicted before I looked:**
+The trained model will beat the baseline on all three labels, with the biggest gain on `reaction` — those posts are short and emotional ("HOLY SHIT", "Amazing game"), which should be easy to learn from examples even though the zero-shot baseline scored 0.000 F1 on them. (Written after seeing the baseline, before seeing the trained comparison.)
 <!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
      prediction made afterwards isn't one. -->
 
