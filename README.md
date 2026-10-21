@@ -274,7 +274,7 @@ points); the three-seed run below is the real measurement.
 | 1. Overall accuracy | ≥ 0.70 every seed | 0.667 | 0.567 | 0.533 | MISSED |
 | 2. `hot_take` F1 | ≥ 0.55 every seed | 0.571 | 0.615 | 0.476 | MISSED |
 | 3. No label > 50% of `labels.csv` | ≤ 50% | 36.5% | 36.5% | 36.5% | MET |
-| 4. Agreement with staff labels | ≥ 70% | — | — | — | pending (Milestone 3) |
+| 4. Agreement with staff labels | ≥ 70% | 100% (30/30) | — | — | MET (one check, not seed-dependent) |
 | 5. Confidence gap (most-sure − least-sure third) | ≥ 0.20 every seed | 0.10 | 0.50 | 0.30 | MISSED |
 
 Device: `mps` (Apple Silicon GPU), torch 2.2.2 — same machine for all three seeds.
@@ -328,13 +328,41 @@ own cold labels drifted on (3 of my 6 off-rule cold labels were `hot_take`-by-ru
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Overall accuracy | ≥ 0.70 on every seed | **MISSED** | 0.667 / 0.567 / 0.533 — no seed reached 0.70 |
+| 2 | `hot_take` F1 | ≥ 0.55 on every seed | **MISSED** | 0.571 / 0.615 / 0.476 — seed 2024 misses by 0.074; two of three passing isn't "every seed" |
+| 3 | No label > 50% of `labels.csv` | ≤ 50% | **MET** | max share is `reaction`, 73/200 = 36.5% |
+| 4 | Agreement with staff labels | ≥ 70% | **MET** | 30/30 = 100% (see Agreement Report for why the set may have been easy) |
+| 5 | Confidence gap, most-sure − least-sure third | ≥ 0.20 on every seed | **MISSED** | 0.10 / 0.50 / 0.30 — seed 42 is one post short in a third of 10 |
 
 **Diagnoses**
+
+**Criterion 1 (accuracy) — the task isn't reachable with this little training, and the measure is unstable.**
+Eval loss finished at ~1.00–1.04 on every seed, against ~1.10 for a uniform guess over three labels; training
+loss only fell from ~1.09 to ~1.03 across ~27 gradient steps (139 posts, batch 16, 3 epochs). Mean predicted
+confidence was 0.37–0.39, barely above the 0.33 of a uniform guess. The model has hardly moved from its
+starting weights, so its top pick often wins by a hair — and which posts land in the 30-post test split swings
+accuracy 13 points (0.667 → 0.533). Not a labelling problem: my agreement check shows I apply a written rule
+consistently, and the miss is spread across all labels rather than one boundary.
+
+**Criterion 2 (`hot_take` F1) — a genuinely hard pair, made harder by my own rule.**
+The matrix confuses `analysis` and `hot_take` in both directions (3 real `hot_take` → `analysis`, 2 the other
+way), and the zero-shot baseline couldn't separate this pair either. The agreement report adds the key piece:
+staff's Rule 1 calls a decorative number a `hot_take` (sp_014), but my rule says "evidence strength is not
+judged," so my training labels put decorated-stat posts in `analysis`. That teaches the model "has a number →
+analysis" even when the number does no work, which blurs exactly this boundary. Labelling *inconsistency* is a
+smaller factor: the 180 pre-labels follow my rule strictly, and my 6 off-rule cold labels are 6 rows of 200.
+Thin data compounds it — 49 `hot_take` and 39 `analysis` training posts per split, and `analysis` F1 hit 0.000
+on seed 7.
+
+**Criterion 5 (confidence gap) — an undertrained model gives nearly flat probabilities, on a coarse measure.**
+With mean confidence 0.37–0.39, "most-sure" and "least-sure" differ by a few hundredths of probability, so the
+ranking into thirds is close to arbitrary. Each third is 10 posts, so seed 42's 0.10 gap is one post. Same root
+cause as criterion 1: too little training signal for the model to become confident about anything.
+
+**What the diagnoses point at for the improvement:** criteria 1 and 5 share one cause — the model is barely
+trained (loss and confidence near chance). This is the unusual case where the diagnosis points at a training
+setting rather than the data.
+
 
 <!-- For each miss: the cause, and how you know. The four common causes are:
      too few examples for a label, a boundary you applied inconsistently, a
