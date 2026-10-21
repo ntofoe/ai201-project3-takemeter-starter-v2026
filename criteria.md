@@ -65,6 +65,12 @@ counts as `analysis`), which some people would call a `hot_take`. 18 of my 80
 reading comments did two things at once, and that's where I expect
 disagreements.
 
+> **Revised in unit 6 (reason only — target unchanged at 70%):** The reason above assumed a staff
+> member would label *my* r/nba posts with *my* definitions. The actual check had me label 30 staff
+> posts (a running forum) under the *staff* taxonomy. The 70% target was still measurable as written
+> (result: 100%, MET), but the risks I named — r/nba sarcasm, in-jokes, my "evidence strength isn't
+> judged" rule — weren't what this check tested.
+
 ---
 
 ## 5. The model's most-confident third of test predictions is at least 0.20 more accurate than its least-confident third, on every one of the three seeds.

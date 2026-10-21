@@ -357,49 +357,43 @@ own cold labels drifted on (3 of my 6 off-rule cold labels were `hot_take`-by-ru
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+**Agreement rate:** 30 / 30 = 100%
 
-<!-- Nobody grades this number. A 60% who argues every disagreement from the
-     stated rules beats a 95% who wrote "staff was right" nine times. Several
-     of the 30 were chosen because they're genuinely ambiguous — you should be
-     winning some of these. -->
+I labelled all 30 under `data/staff_taxonomy.md` and committed `my_staff_labels.csv` before seeing
+the staff labels. I applied the four staff rules to each post individually; the file order didn't
+drive my calls. Two things still argue for "easy set" over "tight rule," and I'm disclosing both:
+- **The staff file is grouped by label** — posts 1–10 are all `analysis`, 11–20 `hot_take`, 21–30
+  `reaction` — so the order itself was a possible cue, even though I don't believe it influenced me.
+- **Staff said a rate in the 70s is normal**, because several posts were picked to be ambiguous.
+  100% on a set built to produce disagreements suggests these posts were cleaner than intended —
+  single-topic, no sarcasm, and close to the taxonomy's own worked examples (sp_014 is nearly the
+  Rule 1 example verbatim).
 
-**Disagreements**
+**Disagreements:** none, so there's nothing to sort into piles (a)/(b)/(c). In their place: the 7
+posts staff flagged as borderline, and the rule that settled each. I matched staff on all 7.
 
-<!-- Three lines each: the post, both labels, and who you think is right and
-     why — grounded in the staff definitions you were both applying.
-
-     Then sort each into one of three piles:
-       (a) the rule covered it and I applied it loosely → a consistency problem
-       (b) the rule genuinely doesn't say               → a gap in the definitions
-       (c) the rule is ambiguous here and my reading is defensible → argue it.
-           This is a legitimate win.
-
-     Pile (a) is the one that matters most for your diagnosis: if you applied a
-     written rule two different ways on 30 posts, that is direct evidence about
-     what you did across your own 200. -->
-
-**1.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
-
-**2.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
+| Post | Competing labels | Rule that settled it | Staff / me |
+|---|---|---|---|
+| sp_005 "Carbon plates aren't the whole story. My times dropped 2%… and another 2% the following year in the same pair…" | `hot_take` vs `analysis` | Rule 1 — the two comparable numbers carry the argument | `analysis` / `analysis` |
+| sp_010 "Three of us ran the same session… within 10 seconds of each other over 5 miles…" | `hot_take` vs `analysis` | Rule 1 — hedged and tiny sample, but the checkable observation is what the claim rests on | `analysis` / `analysis` |
+| sp_014 "Times are down about 3% since the shoe rules changed, so obviously the shoes are the whole story…" | `analysis` vs `hot_take` | Rule 1 — the 3% decorates a conclusion already reached ("so obviously") | `hot_take` / `hot_take` |
+| sp_019 "Nobody actually enjoys the long run…" | `reaction` vs `hot_take` | Rule 2 — a general claim about everyone, not the writer's own morning | `hot_take` / `hot_take` |
+| sp_020 "Every injury thread on this forum is the same injury and the same three replies." | `analysis` vs `hot_take` | Rule 1 — checkable in principle, but no count is given | `hot_take` / `hot_take` |
+| sp_028 "Third DNF this year. I don't really want to talk about it…" | `analysis` vs `reaction` | Rule 3 — "third" is countable but nothing is argued from it | `reaction` / `reaction` |
+| sp_029 "Just realised the shoes I set every PB in this year are the ones I bought by accident in the wrong size." | `hot_take` vs `reaction` | Rule 2 — the writer's own realisation, now | `reaction` / `reaction` |
 
 **What the pattern in my disagreements tells me:**
-
-
+1. **I can apply a written rule I didn't write, the way its authors did,** at least on clean,
+   single-topic posts — including all 7 they flagged as hard.
+2. **It does not show my own 200 r/nba labels are consistent.** Different domain (sarcasm,
+   in-jokes, insults) and a different rule. My strongest evidence about my own consistency is
+   still that **6 of my 20 cold labels didn't follow my own written rule**.
+3. **The most useful finding is a rule difference, not an error.** sp_014 is `hot_take` under staff
+   Rule 1 ("the fact must be load-bearing") — but under **my** unit 5 rule ("evidence strength is
+   not judged") it would be `analysis`. My training labels deliberately put decorated-stat posts in
+   `analysis`, so my model is being taught "contains a number → analysis" even when the number does
+   no work. That is a taxonomy choice baked into my data, and it's a candidate cause for my model's
+   `analysis`↔`hot_take` confusion.
 
 ---
 
