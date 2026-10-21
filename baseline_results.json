@@ -1,0 +1,184 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 30,
+  "seed": 42,
+  "held_out": true,
+  "used_definitions": true,
+  "scores": {
+    "n": 30,
+    "accuracy": 0.3333333333333333,
+    "f1_macro": 0.1666666666666667,
+    "per_label": {
+      "analysis": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 8
+      },
+      "hot_take": {
+        "precision": 0.3448275862068966,
+        "recall": 0.9090909090909091,
+        "f1": 0.5000000000000001,
+        "support": 11
+      },
+      "reaction": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 11
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "That was a fucking disgrace.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Raptors getting no first for Og is hilarious",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Haters, thank you for the generational game thread. \ud83e\udef6",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "fox is about to get burnt on the cross",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Everyone talking about Fox and nobody mentioning the 2 missed free throws by Wemby. After he screamed \"I'm in your head!\" at Robinson. All time choke by him as well.",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "De\u2019Aaron Fox, get ready to learn Chinese, buddy. Actually, he would be lucky to end up in China after that shocking half.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Wemby last week: \"The lack of experience is a strength for us. We can do impossible stuff because we don't know it's impossible.\" Aged like wine. I thought blowing a 29 pt lead in the finals was impossible.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Good God the Spurs fucking suck.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I knew they were losing when they took back to back 3s with 20 seconds on the shot clock instead of burning any time. Terrible awareness",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Spurs woulda won just taking 24 second violations all half Instead they just kept chucking 3s lmao",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Good. 2 orange and blue teams would've been a bad uniform matchup",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Chet having 2 FGA in a game 7 is disgusting Caruso shouldn't have the 2nd most FGA in a game 7 either!",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "HOLYSHIT",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Terrorism lost. Today was a good day.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "THE FLOPPERS ARE OUT! THANK YOU BASKETBALL GODS!",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "OG has been our best defender too in the series.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "That block was top 3 moment of the series Wemby's crazy ass 3 first game obviously #1",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Fox choked. Bone-headed turnovers, bad shots, and THAT.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "It's easy to blame Fox but can we all agree that they all started jacking up 3s and running basically 0 plays a majority of the second half? Seems like coaching was totally absent.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Bro those two consecutive unforced turnovers in the 3rd were absolutely diabolical. Threw the ball out of bounds under no pressure then dribbled the ball off his own foot. Basically caused an 8 point swing by himself in less than a minute.",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "He really is so great holy. Him stopping Castle from hulking out, Crazy good defense, Made impactful offensive rebounds. He has me as a fan for life.",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I\u2019m just here for this sub\u2019s meltdown",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "FUCK YOU FOX YOU FUCKING DUMBASS",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Him contesting Brunson was also dumb. You have Vic on him, play help, but why are you doubling all the way out there and then contesting as well, when you have a 7\u20195 giant on him. Left og wide open for the rebound. He also gave the ball to hart who smoked a layup. Fox and wemby crumbled down the stretch. Idk wanna hear wemby being compared to SGA and jokic anymore. That was pathetic",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "$240 million to put up 2 FGA and have 4/4/0 is ridiculous, he was scared for his life",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Max contract to do dumb shit like that man, sometimes he shows his experience but man he is not worth that contract, I know he's injured but jeuss christ",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Just one more 3pt attempt bro we are 25 points ahead hahahahaha Just one more 3pt attempt bro we are 15 points ahead hahahaha Just one more 3pt attempt bro we are 10 points ahead hahaha DONT GO FOR THE LAYUP FOX WE ARE 1 POINT AHEAD PLEASE",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Josh Hart owes OG with his life",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "OMG why did Fox take it to the basket and not dribble it out? Why attack OG? What a boneheaded play.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Spurs may be the biggest chokers of all time after this and game 2. Absolutely insane. Awful 2nd half, awful coaching, idiotic choice by Fox to take that shot. And then of course on the final play you don't even get the ball to Wemby. Absolutely pathetic *also wemby missed free throws",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    }
+  ]
+}
