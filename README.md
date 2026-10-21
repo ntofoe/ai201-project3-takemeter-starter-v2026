@@ -271,24 +271,48 @@ points); the three-seed run below is the real measurement.
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.70 every seed | 0.667 | 0.567 | 0.533 | MISSED |
+| 2. `hot_take` F1 | ≥ 0.55 every seed | 0.571 | 0.615 | 0.476 | MISSED |
+| 3. No label > 50% of `labels.csv` | ≤ 50% | 36.5% | 36.5% | 36.5% | MET |
+| 4. Agreement with staff labels | ≥ 70% | — | — | — | pending (Milestone 3) |
+| 5. Confidence gap (most-sure − least-sure third) | ≥ 0.20 every seed | 0.10 | 0.50 | 0.30 | MISSED |
+
+Device: `mps` (Apple Silicon GPU), torch 2.2.2 — same machine for all three seeds.
+Criterion 3 is a property of `labels.csv` (max share = `reaction`, 73/200), so it's the same on every seed.
+
+Full spread across seeds (from notebook section 6):
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.667 | 0.567 | 0.533 | 0.133 |
+| Macro F1 | 0.667 | 0.436 | 0.536 | 0.231 |
+| F1 — `analysis` | 0.667 | 0.000 | 0.632 | 0.667 |
+| F1 — `hot_take` | 0.571 | 0.615 | 0.476 | 0.139 |
+| F1 — `reaction` | 0.762 | 0.692 | 0.500 | 0.262 |
+
+Accuracy moved 13.3 points across seeds — more than the ~10-point line where a measure stops being stable.
+Mean predicted confidence was only 0.37–0.39 on every seed (0.33 would be a uniform guess), and eval loss
+ended at ~1.00–1.04 vs ~1.10 for chance: the model barely moved from its starting point in 3 epochs.
 
 ### Confusion matrix
 
 <!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
      An image of a matrix earns nothing. -->
 
-| true \ predicted |  |  |  |
+Seed 42 (one split of 30 posts; diagonal 20/30 = 0.667):
+
+| true \ predicted | analysis | hot_take | reaction |
 |---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| **analysis** | 6 | 2 | 0 |
+| **hot_take** | 3 | 6 | 2 |
+| **reaction** | 1 | 2 | 8 |
 
 **My biggest off-diagonal number, and what it means:**
+3 real `hot_take` posts were called `analysis`, and 2 real `analysis` posts went the other way —
+roughly symmetric, so the model hasn't learned where my `analysis`/`hot_take` boundary sits in
+either direction. That's the same boundary my decision rule was written for, and the same one my
+own cold labels drifted on (3 of my 6 off-rule cold labels were `hot_take`-by-rule posts I called
+`analysis`).
 <!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
      direction. "7 real analysis posts were called hot_take and only 3 went the
      other way" is a direction, not just an error rate. -->
