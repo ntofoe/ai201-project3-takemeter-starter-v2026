@@ -228,12 +228,17 @@ For `criteria.md`, Claude supplied context (test-split sizes, chance rate, what
 <!-- Both models on the same posts. `python baseline.py --trained results.json`
      prints this table for you. -->
 
-| Measure | Baseline | Trained | Difference |
-|---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Measure | Baseline (my definitions) | Baseline (bare label names) | Trained (seed 42) | Trained − best baseline |
+|---|---|---|---|---|
+| Overall accuracy | 0.333 | 0.433 | 0.667 | +0.233 |
+| Macro F1 | 0.167 | 0.329 | 0.667 | +0.338 |
+| F1 — `analysis` | 0.000 | 0.000 | 0.667 | +0.667 |
+| F1 — `hot_take` | 0.500 | 0.455 | 0.571 | +0.071 |
+| F1 — `reaction` | 0.000 | 0.533 | 0.762 | +0.229 |
+
+Baseline: `facebook/bart-large-mnli`, zero-shot, on the same 30 posts in `test_split.csv`.
+The official baseline (`baseline_results.json`) is the run with my definitions; the bare-names
+run is saved in `notes/baseline_bare_names.txt`.
 
 **What I predicted before I looked:**
 The trained model will beat the baseline on all three labels, with the biggest gain on `reaction` — those posts are short and emotional ("HOLY SHIT", "Amazing game"), which should be easy to learn from examples even though the zero-shot baseline scored 0.000 F1 on them. (Written after seeing the baseline, before seeing the trained comparison.)
@@ -241,6 +246,17 @@ The trained model will beat the baseline on all three labels, with the biggest g
      prediction made afterwards isn't one. -->
 
 **What the gap actually means:**
+Fine-tuning clearly added something: the trained model beats the *stronger* baseline by 0.233
+accuracy. But the comparison has a confound. **My definitions made the zero-shot baseline worse,
+not better** (0.333 vs 0.433 with bare names), and the drop is almost all `reaction` (0.533 → 0.000).
+My `reaction` definition starts "makes **no** arguable claim," and NLI models are weak at negation,
+so a definition written precisely for human labelers turned out to be a poor prompt for this model.
+So my prediction was half right: against my-definitions baseline the biggest gain is `reaction`
+(+0.762), but against the fairer bare-names baseline the biggest gain is `analysis` (+0.667). No
+zero-shot version identified a single `analysis` post — that is where fine-tuning added the most
+real value. `hot_take` barely improved (+0.071 over its best baseline), consistent with my
+expectation that it's the hardest label. Caveat: this is one seed on 30 posts (one post = 3.3
+points); the three-seed run below is the real measurement.
 <!-- If the baseline matched your trained model, your fine-tuning added
      nothing — and that is a real finding, not a failure. Say it plainly. -->
 
