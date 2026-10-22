@@ -216,6 +216,22 @@ Trained on `mps` (Apple Silicon GPU via MPS), torch 2.2.2, as recorded in `resul
 For `criteria.md`, Claude supplied context (test-split sizes, chance rate, what
 `agreement.py` measures) and drafted the wording; every target number was my choice.
 
+**Unit 6 AI use.** I labelled the 30 staff posts myself under `data/staff_taxonomy.md`, with no AI, and
+committed them before opening the staff labels. My prediction in Milestone 1 was my own choice (picked from
+options Claude laid out, before I saw the trained comparison). Claude ran the analysis alongside me:
+- **Moment 3 — reading the baseline.** Claude spotted from the F1 pattern that the baseline had collapsed
+  onto `hot_take`, suggested negation in my `reaction` definition as the cause, and proposed the bare-names
+  run to test it. I ran it: bare names scored 0.433 vs 0.333 with my definitions, so my definitions hurt
+  the zero-shot model. That's now in "What the gap actually means."
+- **Moment 4 — choosing the improvement.** Claude read the training logs and pointed out that eval loss
+  (~1.0) and mean confidence (~0.38) were near chance, i.e. the model was barely trained. I chose 3 → 10
+  epochs over adding `analysis` posts on that basis; the after-run confirmed it (loss 0.71–0.83,
+  confidence 0.55–0.71).
+- Claude also noticed the staff file was grouped by label (disclosed in the Agreement Report), contrasted
+  staff Rule 1 with my own rule on sp_014, drafted the README write-ups from my results for me to review,
+  and wrote the helper scripts used to fill the README tables. Every verdict follows mechanically from the
+  targets I set in unit 5.
+
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
      Don't fill these in during unit 5.
@@ -495,10 +511,35 @@ After-run confusion matrix (seed 42, 19/30 = 0.633):
 
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
+**Criterion 1 (accuracy ≥ 0.70 every seed) — still MISSED (0.633 / 0.700 / 0.567).**
+*What I'd do next:* make the measurement stable before chasing the number. A 30-post test split means one
+post is 3.3 points, and the spread across seeds (13.3 points) didn't move when the model improved. I'd collect
+~200 more posts from more than two games (so player names stop being shortcuts) and report 5-fold
+cross-validation instead of three 70/15/15 splits.
+*Why I stopped:* the one-change rule for this unit, and collecting 200 more posts is a unit's worth of work.
+
+**Criterion 2 (`hot_take` F1 ≥ 0.55 every seed) — still MISSED (0.500 / 0.667 / 0.600).**
+*What I'd do next:* relabel the `analysis`/`hot_take` boundary under a load-bearing-fact rule, like staff
+Rule 1. My rule says "evidence strength is not judged," so decorated-stat posts sit in `analysis`. I'd
+re-read the 56 `analysis` rows asking "is the number the reason, or decoration on a conclusion already
+reached?", count how many move, and retrain on the same three seeds. The matrix points here: the 3↔2
+`analysis`/`hot_take` confusion was identical before and after more training, so training wasn't the fix.
+*Why I stopped:* this changes my taxonomy, which the unit forbids alongside the one improvement — and I had
+already spent my one change on epochs, which my diagnosis pointed at more strongly.
+
+**Criterion 5 — MET after the change, but fragile.** Seed 42's gap is exactly 0.20 (one post in a third of
+10). A larger test set would make this verdict trustworthy rather than borderline.
+
 
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
+I meant `analysis` to capture posts that argue from evidence, but my rule turned that into "contains a
+specific on-court fact offered as support," so the model learned something closer to "mentions a number or a
+specific play" — which is why the same 3 real `hot_take` posts were called `analysis` (and 2 went the other way)
+in the seed-42 matrix both before and after the fix. `reaction` is the label it learned best (F1 up to 0.842)
+because its surface signals are strong, but in the after-run 3 `hot_take` posts leaked into `reaction`,
+showing the model still keys partly on heat and tone, which my rule told it to ignore.
 <!-- Two sentences. Your confusion matrix is the evidence. -->
 
 
