@@ -428,20 +428,61 @@ posts staff flagged as borderline, and the rule that settled each. I matched sta
 ## The Improvement
 
 **What I changed:**
+One training setting: `EPOCHS` from 3 to 10 (notebook section 2). Everything else identical — same
+`labels.csv`, same taxonomy, same learning rate (2e-5), batch size (16), max length (128), and the same
+three seeds (42, 7, 2024), on the same `mps` device. ~27 gradient steps became ~90.
 
 **Which diagnosis pointed at it:**
+Criteria 1 and 5. Before the change, eval loss ended at ~1.00–1.04 (chance is ~1.10) and mean predicted
+confidence was 0.37–0.39 (uniform guess is 0.33) on every seed — the model had barely moved from its
+starting weights. That pointed at training, not data. I did not pick the alternative (adding ~30 `analysis`
+posts) because the near-chance loss explained two misses, while thin `analysis` data explained one.
 
 ### Run Log — After
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.70 every seed | 0.633 | 0.700 | 0.567 | MISSED |
+| 2. `hot_take` F1 | ≥ 0.55 every seed | 0.500 | 0.667 | 0.600 | MISSED |
+| 3. No label > 50% of `labels.csv` | ≤ 50% | 36.5% | 36.5% | 36.5% | MET (data unchanged) |
+| 4. Agreement with staff labels | ≥ 70% | 100% (30/30) | — | — | MET (unchanged — not affected by training) |
+| 5. Confidence gap (most-sure − least-sure third) | ≥ 0.20 every seed | 0.20 | 0.40 | 0.30 | **MET** (was MISSED; seed 42 exactly on the line) |
+
+Full spread after the change:
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.633 | 0.700 | 0.567 | 0.133 |
+| Macro F1 | 0.631 | 0.693 | 0.562 | 0.131 |
+| F1 — `analysis` | 0.667 | 0.571 | 0.615 | 0.095 |
+| F1 — `hot_take` | 0.500 | 0.667 | 0.600 | 0.167 |
+| F1 — `reaction` | 0.727 | 0.842 | 0.471 | 0.372 |
+| Final eval loss | 0.713 | 0.745 | 0.834 | — |
+| Mean confidence (right / wrong) | 0.712 / 0.650 | 0.555 / 0.479 | 0.624 / 0.546 | — |
+
+After-run confusion matrix (seed 42, 19/30 = 0.633):
+
+| true \ predicted | analysis | hot_take | reaction |
+|---|---|---|---|
+| **analysis** | 6 | 2 | 0 |
+| **hot_take** | 3 | 5 | 3 |
+| **reaction** | 1 | 2 | 8 |
 
 **Did it help, and how do I know:**
+**Partly — it confirmed the diagnosis and flipped one criterion, but not the two I most wanted.**
+- **The diagnosis was right.** Final eval loss fell from ~1.0 to 0.71–0.83 and was still falling at
+  epoch 10 (no overfitting — validation loss never rose). Mean confidence rose from ~0.38 to 0.55–0.71,
+  and the model is now more confident when right than when wrong; before, those were nearly equal.
+- **Criterion 5 flipped to MET** (gaps 0.20 / 0.40 / 0.30). Honestly fragile: seed 42 is exactly on
+  the line, one post in a third of 10.
+- **Averages improved:** mean accuracy 0.589 → 0.633, mean macro F1 0.546 → 0.629, and `analysis` no
+  longer collapses (worst seed 0.000 → 0.571; spread 0.667 → 0.095).
+- **Criteria 1 and 2 are still MISSED.** Seed 7 reached 0.700, but 42 and 2024 didn't. `hot_take` F1
+  rose on two seeds but fell to 0.500 on seed 42.
+- **Two things more training didn't touch:** the `analysis`↔`hot_take` confusion is identical in the
+  seed-42 matrix (3 one way, 2 the other) — consistent with my diagnosis that the boundary is blurred by
+  my own rule, not by too little training. And the accuracy spread across seeds is unchanged at 13.3
+  points: which 30 posts land in the test split still moves the score as much as the fix did.
 
 <!-- If it didn't, say so. Relabelling that didn't help is a genuinely
      interesting result and earns full credit. -->
